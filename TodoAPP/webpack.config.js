@@ -8,7 +8,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
-  entry: "./src/index.tsx",
+  entry: "./src/app/index.tsx",
   output: {
     path: path.resolve(__dirname, "build"),
     filename: isProduction ? 'js/[name].[chunkhash].js' : 'js/[name].js',

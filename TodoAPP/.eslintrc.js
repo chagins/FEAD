@@ -39,7 +39,8 @@ module.exports = {
     "react-hooks/exhaustive-deps": "error",
     "comma-dangle": ["error", "only-multiline"],
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "import/no-extraneous-dependencies": 0,
   },
   'settings': {
     "react": {
