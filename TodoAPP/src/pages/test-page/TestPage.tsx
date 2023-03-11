@@ -1,5 +1,6 @@
 import React from 'react';
+import styles from './TestPage.module.scss';
 
 export const TestPage = () => {
-  return <div>Test Page</div>;
+  return <div className={styles.TestPage}>test page</div>;
 };

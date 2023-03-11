@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React, { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 

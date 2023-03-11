@@ -49,6 +49,7 @@ module.exports = {
         unnamedComponents: 'arrow-function',
       },
     ],
+    "react/display-name": 0,
   },
   'settings': {
     "react": {
