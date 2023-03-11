@@ -17,6 +17,7 @@ const config = {
   target: 'web',
   devtool: 'source-map',
   devServer: {
+    historyApiFallback: true,
     static: {
       directory: path.resolve(__dirname, './public')
     },
@@ -93,6 +94,9 @@ const config = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
+    alias: {
+      "pages": path.resolve(__dirname, 'src/pages'),
+    },
   },
 };
 
