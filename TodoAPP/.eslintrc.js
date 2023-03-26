@@ -50,6 +50,7 @@ module.exports = {
       },
     ],
     "react/display-name": 0,
+    "no-console": ["error", {"allow": ["error"]}]
   },
   'settings': {
     "react": {

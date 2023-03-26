@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -31,6 +32,9 @@ const config = {
     },
   },
   plugins: [
+    new Dotenv({
+      ignoreStub: true
+    }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'public', 'index.html'),
     }),
@@ -40,7 +44,7 @@ const config = {
     new WebpackManifestPlugin({
       fileName: "assets-manifest.json",
       publicPath: '',
-      filter: (({name}) => name.endsWith('.map') ? false : true)
+      filter: (({ name }) => name.endsWith('.map') ? false : true)
     }),
     new CopyPlugin({
       patterns: [
@@ -96,6 +100,7 @@ const config = {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: {
       "pages": path.resolve(__dirname, 'src/pages'),
+      "shared": path.resolve(__dirname, 'src/shared'),
     },
   },
 };

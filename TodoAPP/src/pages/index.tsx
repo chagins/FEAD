@@ -2,11 +2,11 @@ import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 const TestPage = lazy(() =>
-  import('pages/test-page').then(({ TestPage: lazyTestPage }) => ({ default: lazyTestPage }))
+  import('pages/TestPage').then(({ TestPage: lazyTestPage }) => ({ default: lazyTestPage }))
 );
 
 const NotFoundPage = lazy(() =>
-  import('pages/not-found-page').then(({ NotFoundPage: lazyNotFoundPage }) => ({
+  import('pages/NotFoundPage').then(({ NotFoundPage: lazyNotFoundPage }) => ({
     default: lazyNotFoundPage,
   }))
 );
