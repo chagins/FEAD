@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactNode } from 'react';
-import { TTask } from 'shared/api/models';
+import { type TTask } from 'shared/api';
 import { Link } from 'react-router-dom';
 import { StyledTaskRow } from './TaskRow.styled';
 

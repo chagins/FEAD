@@ -1,12 +1,12 @@
 import type { AxiosPromise } from 'axios';
 import { apiInstance } from './base';
-import { TTask } from './models';
+import { TTask } from './types';
 
-export type TGetTasksListParams = {
+type TGetTasksListParams = {
   completed?: boolean;
 };
 
-export type TGetTasksListResponse = {
+type TGetTasksListResponse = {
   documents: TTask[];
 };
 
@@ -18,11 +18,11 @@ export const getTasksList = (params?: TGetTasksListParams): AxiosPromise<TGetTas
   });
 };
 
-export type TApiGetTaskByIdParams = {
+type TApiGetTaskByIdParams = {
   id: number;
 };
 
-export type TGetTaskByIdResponse = {
+type TGetTaskByIdResponse = {
   document: TTask;
 };
 
@@ -34,12 +34,12 @@ export const getTaskById = (params: TApiGetTaskByIdParams): AxiosPromise<TGetTas
   });
 };
 
-export type TUpdateTaskCompleteStatusParams = {
+type TUpdateTaskCompleteStatusParams = {
   id: number;
   completed: boolean;
 };
 
-export type TApiUpdateTaskResponse = {
+type TApiUpdateTaskResponse = {
   matchedCount: number;
   modifiedCount: number;
 };

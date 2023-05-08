@@ -107,6 +107,7 @@ const config = {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: {
       "pages": path.resolve(__dirname, 'src/pages'),
+      "entities": path.resolve(__dirname, 'src/entities'),
       "shared": path.resolve(__dirname, 'src/shared'),
     },
   },
