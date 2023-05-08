@@ -69,8 +69,15 @@ const config = {
     rules: [
       {
         test: /\.(ts|js)x?$/i,
-        use: 'babel-loader',
-        exclude: ["/node_modules/"],
+        exclude: [/node_modules/],
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
+          }
+        ],
       },
       {
         test: /\.css$/i,
