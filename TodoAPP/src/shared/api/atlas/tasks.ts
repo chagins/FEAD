@@ -39,7 +39,7 @@ type TUpdateTaskCompleteStatusParams = {
   completed: boolean;
 };
 
-type TApiUpdateTaskResponse = {
+export type TApiUpdateTaskResponse = {
   matchedCount: number;
   modifiedCount: number;
 };

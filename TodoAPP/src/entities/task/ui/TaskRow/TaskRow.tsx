@@ -10,10 +10,10 @@ export type TTaskRowProps = PropsWithChildren<{
 }>;
 
 export const TaskRow = ({ data, titleHref, before }: TTaskRowProps) => {
-  const title = titleHref ? <Link to={titleHref}>{data.title}</Link> : data.title;
+  const title = <Link to={titleHref}>{data.title}</Link>;
 
   return (
-    <StyledTaskRow completed={data.completed}>
+    <StyledTaskRow isCompleted={data.completed}>
       {before}
       {title}
     </StyledTaskRow>

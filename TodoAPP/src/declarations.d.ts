@@ -1,3 +1,4 @@
+/* Styles */
 declare module '*.scss';
 
 /* store */

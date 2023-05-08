@@ -1,21 +1,12 @@
-import React, { lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
-
-const TestPage = lazy(() =>
-  import('pages/TestPage').then(({ TestPage: lazyTestPage }) => ({ default: lazyTestPage }))
-);
-
-const NotFoundPage = lazy(() =>
-  import('pages/NotFoundPage').then(({ NotFoundPage: lazyNotFoundPage }) => ({
-    default: lazyNotFoundPage,
-  }))
-);
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { TasksListPage } from 'pages/TasksListPage';
 
 export const Routing = () => {
   return (
     <Routes>
-      <Route path="/" element={<TestPage />} />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="/" element={<TasksListPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };

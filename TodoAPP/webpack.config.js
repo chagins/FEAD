@@ -65,6 +65,10 @@ const config = {
       new CssMinimizerPlugin(),
     ]
   },
+  performance: {
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
   module: {
     rules: [
       {
@@ -107,6 +111,8 @@ const config = {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: {
       "pages": path.resolve(__dirname, 'src/pages'),
+      "features": path.resolve(__dirname, 'src/features'),
+      "widgets": path.resolve(__dirname, 'src/widgets'),
       "entities": path.resolve(__dirname, 'src/entities'),
       "shared": path.resolve(__dirname, 'src/shared'),
     },

@@ -1,2 +1,2 @@
-export * as API from './atlas';
+export * as atlasApi from './atlas';
 export * from './atlas/types';
