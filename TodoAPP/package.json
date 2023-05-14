@@ -13,12 +13,13 @@
     "build-js": "webpack --mode=production --node-env=production",
     "build-types": "tsc --emitDeclarationOnly",
     "ts-check": "tsc --noEmit",
-    "build": "yarn run lint && yarn run ts-check && yarn run build-js",
+    "build": "yarn run netlify-env && yarn run build-js",
     "test": "jest",
     "watch": "webpack --watch",
     "lint": "yarn run eslint:fix && yarn run prettier:fix",
     "eslint:fix": "eslint --fix --ext js,jsx,ts,tsx src",
-    "prettier:fix": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,json}\""
+    "prettier:fix": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,json}\"",
+    "netlify-env": "node ./.env.js"
   },
   "browserslist": {
     "production": [
