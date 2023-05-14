@@ -12,7 +12,7 @@ export const ToggleTask = ({ id, isCompleted }: TToggleTaskProps) => {
   const dispatch = useAppDispatch();
 
   const onToggle = useCallback(() => {
-    dispatch(taskModel.toggleTask(id));
+    dispatch(taskModel.toggleTaskMutation(id));
   }, [dispatch, id]);
 
   return <Checkbox onClick={onToggle} checked={isCompleted} />;

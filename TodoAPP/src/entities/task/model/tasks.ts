@@ -5,10 +5,11 @@ import {
   EntityState,
   createAsyncThunk,
   PayloadAction,
+  createSelector,
 } from '@reduxjs/toolkit';
 import { TTask, atlasApi } from 'shared/api';
 
-export const fetchTasks = createAsyncThunk<TTask[], void, { rejectValue: string }>(
+export const fetchTasksQuery = createAsyncThunk<TTask[], void, { rejectValue: string }>(
   'tasks/fetchTasks',
   async (_, { rejectWithValue }) => {
     try {
@@ -24,8 +25,8 @@ export const fetchTasks = createAsyncThunk<TTask[], void, { rejectValue: string 
   }
 );
 
-export const toggleTask = createAsyncThunk<
-  atlasApi.TApiUpdateTaskResponse & { id: number },
+export const toggleTaskMutation = createAsyncThunk<
+  { id: number },
   number,
   { rejectValue: string; state: RootState }
 >('tasks/toggleTask', async (id: number, { rejectWithValue, getState }) => {
@@ -38,12 +39,14 @@ export const toggleTask = createAsyncThunk<
       id: toggledTask.id,
       completed: !toggledTask.completed,
     });
+    if (response.data.modifiedCount === 0) {
+      throw new Error(`Task status with id: ${id} has not changed`);
+    }
     return {
-      ...response.data,
       id,
     };
   } catch (err) {
-    let messageError = 'Update task error';
+    let messageError = 'Toggle task error';
     if (err instanceof Error) {
       messageError = `${messageError}: ${err.message}`;
     }
@@ -53,48 +56,57 @@ export const toggleTask = createAsyncThunk<
 
 const tasksAdapter = createEntityAdapter<TTask>();
 
+export type TQueryConfig = {
+  completed?: boolean;
+};
+
 type TTasksSlice = EntityState<TTask> & {
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
   error: string | undefined;
+  queryConfig: TQueryConfig;
 };
 
 const initialState: TTasksSlice = tasksAdapter.getInitialState({
   status: 'idle',
   error: undefined,
+  queryConfig: {},
 });
 
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    toggleTask(state, action: PayloadAction<number>) {
-      const toggledTask = state.entities[action.payload];
+    addMultipleTasks(state, action: PayloadAction<TTask[]>) {
+      tasksAdapter.upsertMany(state, action.payload);
+    },
+    toggleTask(state, action: PayloadAction<{ id: number }>) {
+      const { id } = action.payload;
+      const toggledTask = state.entities[id];
       if (toggledTask) {
         toggledTask.completed = !toggledTask.completed;
       }
     },
+    setQueryConfig(state, action: PayloadAction<TQueryConfig>) {
+      state.queryConfig = action.payload;
+    },
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchTasks.pending, (state) => {
+      .addCase(fetchTasksQuery.pending, (state) => {
         state.status = 'pending';
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
+      .addCase(fetchTasksQuery.fulfilled, (state, action) => {
         state.status = 'fulfilled';
-        tasksAdapter.upsertMany(state, action.payload);
+        tasksSlice.caseReducers.addMultipleTasks(state, action);
       })
-      .addCase(fetchTasks.rejected, (state, action) => {
+      .addCase(fetchTasksQuery.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload;
       })
-      .addCase(toggleTask.fulfilled, (state, action) => {
-        const { id, modifiedCount } = action.payload;
-        const toggledTask = state.entities[id];
-        if (toggledTask && modifiedCount > 0) {
-          toggledTask.completed = !toggledTask.completed;
-        }
+      .addCase(toggleTaskMutation.fulfilled, (state, action) => {
+        tasksSlice.caseReducers.toggleTask(state, action);
       })
-      .addCase(toggleTask.rejected, (state, action) => {
+      .addCase(toggleTaskMutation.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload;
       });
@@ -102,5 +114,13 @@ const tasksSlice = createSlice({
 });
 
 export const { reducer } = tasksSlice;
-export const { selectAll: selectAllTasks, selectById: selectTaskById } =
-  tasksAdapter.getSelectors<RootState>((state) => state.tasks);
+const { selectAll } = tasksAdapter.getSelectors<RootState>((state) => state.tasks);
+
+export const { setQueryConfig } = tasksSlice.actions;
+export const selectAllTasks = createSelector(
+  [selectAll, (state: RootState) => state.tasks.queryConfig],
+  (tasks, queryConfig) =>
+    tasks.filter(
+      (task) => queryConfig?.completed === undefined || queryConfig.completed === task.completed
+    )
+);
