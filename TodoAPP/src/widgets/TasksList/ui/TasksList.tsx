@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Typography } from '@mui/material';
+import { AlertTitle } from '@mui/material';
 import { TaskRow, taskModel } from 'entities/task';
 import { useAppDispatch, useAppSelector } from 'shared/model';
 import { ToggleTask } from 'features/ToggleTask';
 import { FilterTasks } from 'features/FilterTasks';
+import Alert from '@mui/material/Alert';
 import { StyledTaskList } from './TasksList.styled';
 
 export const TasksList = () => {
@@ -25,11 +26,16 @@ export const TasksList = () => {
   return (
     <StyledTaskList>
       <FilterTasks />
-      <Stack spacing={4}>
-        {tasksStatus === 'pending' && <CircularProgress />}
-        {tasksStatus === 'rejected' && <Typography>{tasksError}</Typography>}
-        {tasksStatus === 'fulfilled' &&
-          tasks.map((task) => (
+      {tasksStatus === 'pending' && <CircularProgress />}
+      {tasksStatus === 'rejected' && (
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {tasksError}
+        </Alert>
+      )}
+      {tasksStatus === 'fulfilled' && (
+        <Stack className="tasksStack">
+          {tasks.map((task) => (
             <TaskRow
               key={task.id}
               data={task}
@@ -37,7 +43,8 @@ export const TasksList = () => {
               before={<ToggleTask id={task.id} isCompleted={task.completed} />}
             />
           ))}
-      </Stack>
+        </Stack>
+      )}
     </StyledTaskList>
   );
 };

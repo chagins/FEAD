@@ -12,8 +12,9 @@ export const StyledTaskRow = styled(Paper, {
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'left',
-  color: theme.palette.text.secondary,
   transition: `${theme.transitions.duration.short}s`,
   textDecoration: isCompleted ? 'line-through' : 'none',
-  opacity: isCompleted ? '0.5' : '1',
+  '& > a, & > a:visited': {
+    color: theme.palette.primary.main,
+  },
 }));

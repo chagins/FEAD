@@ -1,4 +1,5 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign */ // redux toolkit use immer lib
+
 import {
   createSlice,
   createEntityAdapter,
@@ -25,6 +26,25 @@ export const fetchTasksQuery = createAsyncThunk<TTask[], void, { rejectValue: st
   }
 );
 
+export const fetchTaskByIdQuery = createAsyncThunk<TTask, number, { rejectValue: string }>(
+  'tasks/fetchTaskById',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await atlasApi.getTaskById({ id });
+      if (!response.data.document) {
+        throw new Error(`task with id ${id} not found`);
+      }
+      return response.data.document;
+    } catch (err) {
+      let messageError = `Fetch task error`;
+      if (err instanceof Error) {
+        messageError = `${messageError}: ${err.message}`;
+      }
+      return rejectWithValue(messageError);
+    }
+  }
+);
+
 export const toggleTaskMutation = createAsyncThunk<
   { id: number },
   number,
@@ -33,7 +53,7 @@ export const toggleTaskMutation = createAsyncThunk<
   try {
     const toggledTask = getState().tasks.entities[id];
     if (!toggledTask) {
-      throw new Error(`Task with id: ${id} not found`);
+      throw new Error(`Task with id ${id} not found`);
     }
     const response = await atlasApi.updateTaskCompleteStatus({
       id: toggledTask.id,
@@ -54,7 +74,7 @@ export const toggleTaskMutation = createAsyncThunk<
   }
 });
 
-const tasksAdapter = createEntityAdapter<TTask>();
+const tasksAdapter = createEntityAdapter<TTask>({ sortComparer: (a, b) => a.id - b.id });
 
 export type TQueryConfig = {
   completed?: boolean;
@@ -77,7 +97,10 @@ const tasksSlice = createSlice({
   initialState,
   reducers: {
     addMultipleTasks(state, action: PayloadAction<TTask[]>) {
-      tasksAdapter.upsertMany(state, action.payload);
+      tasksAdapter.setAll(state, action.payload);
+    },
+    addSingleTasks(state, action: PayloadAction<TTask>) {
+      tasksAdapter.addOne(state, action.payload);
     },
     toggleTask(state, action: PayloadAction<{ id: number }>) {
       const { id } = action.payload;
@@ -109,16 +132,31 @@ const tasksSlice = createSlice({
       .addCase(toggleTaskMutation.rejected, (state, action) => {
         state.status = 'rejected';
         state.error = action.payload;
+      })
+      .addCase(fetchTaskByIdQuery.pending, (state) => {
+        state.status = 'pending';
+      })
+      .addCase(fetchTaskByIdQuery.fulfilled, (state, action) => {
+        state.status = 'idle';
+        tasksSlice.caseReducers.addSingleTasks(state, action);
+      })
+      .addCase(fetchTaskByIdQuery.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.error = action.payload;
       });
   },
 });
 
+export const { selectById: selectTaskById } = tasksAdapter.getSelectors<RootState>(
+  (state) => state.tasks
+);
 export const { reducer } = tasksSlice;
-const { selectAll } = tasksAdapter.getSelectors<RootState>((state) => state.tasks);
-
 export const { setQueryConfig } = tasksSlice.actions;
 export const selectAllTasks = createSelector(
-  [selectAll, (state: RootState) => state.tasks.queryConfig],
+  [
+    tasksAdapter.getSelectors<RootState>((state) => state.tasks).selectAll,
+    (state: RootState) => state.tasks.queryConfig,
+  ],
   (tasks, queryConfig) =>
     tasks.filter(
       (task) => queryConfig?.completed === undefined || queryConfig.completed === task.completed
