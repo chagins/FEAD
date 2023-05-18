@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'shared/model';
+import { useAppDispatch, useAppSelector } from 'shared/lib';
 import { taskModel, TaskCard } from 'entities/task';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';

@@ -3,7 +3,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Typography } from '@mui/material';
 import { taskModel } from 'entities/task';
-import { useAppDispatch } from 'shared/model';
+import { useAppDispatch } from 'shared/lib';
 
 type TFilterType = { label: string; config: taskModel.TQueryConfig };
 
@@ -34,7 +34,12 @@ export const FilterTasks = () => {
   };
 
   return (
-    <ToggleButtonGroup value={filter} onChange={(_, value) => onFilter(value)} exclusive>
+    <ToggleButtonGroup
+      color="secondary"
+      value={filter}
+      onChange={(_, value) => onFilter(value)}
+      exclusive
+    >
       {filterTypes.map(({ label, config }) => (
         <ToggleButton key={label} value={config}>
           <Typography>{label}</Typography>

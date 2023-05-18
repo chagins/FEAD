@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import Checkbox from '@mui/material/Checkbox';
-import { useAppDispatch } from 'shared/model';
+import { useAppDispatch } from 'shared/lib';
 import { taskModel, taskLib } from 'entities/task';
 import FormControlLabel from '@mui/material/FormControlLabel';
 

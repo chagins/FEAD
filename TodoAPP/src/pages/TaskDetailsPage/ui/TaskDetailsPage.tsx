@@ -6,7 +6,7 @@ import { TaskDetails } from 'widgets/TaskDetails';
 export const TaskDetailsPage = () => {
   return (
     <Container maxWidth="md">
-      <Typography mt={2} variant="h1" align="center">
+      <Typography mt={2} variant="h2" align="center">
         Tasks details
       </Typography>
       <TaskDetails />

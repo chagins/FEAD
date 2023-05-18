@@ -1,6 +1,6 @@
 import React from 'react';
-import { ThemeProvider } from '@mui/material';
-import { theme } from 'shared/lib';
+import { CustomThemeProvider } from 'entities/theme';
 
-export const withTheme = (component: () => React.ReactNode) => () =>
-  <ThemeProvider theme={theme}>{component()}</ThemeProvider>;
+export const withTheme = (component: () => React.ReactNode) => () => {
+  return <CustomThemeProvider>{component()}</CustomThemeProvider>;
+};

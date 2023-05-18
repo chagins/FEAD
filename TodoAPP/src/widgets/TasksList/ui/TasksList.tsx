@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import { AlertTitle } from '@mui/material';
 import { TaskRow, taskModel } from 'entities/task';
-import { useAppDispatch, useAppSelector } from 'shared/model';
+import { useAppDispatch, useAppSelector } from 'shared/lib';
 import { ToggleTask } from 'features/ToggleTask';
 import { FilterTasks } from 'features/FilterTasks';
 import Alert from '@mui/material/Alert';
