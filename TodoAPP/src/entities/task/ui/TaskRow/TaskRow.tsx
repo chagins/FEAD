@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactNode } from 'react';
 import { type TTask } from 'shared/api';
-import { Link } from '@mui/material';
+import { StyledRouterLink } from 'shared/ui';
 import { StyledTaskRow } from './TaskRow.styled';
 
 export type TTaskRowProps = PropsWithChildren<{
@@ -10,11 +10,7 @@ export type TTaskRowProps = PropsWithChildren<{
 }>;
 
 export const TaskRow = ({ data, titleHref, before }: TTaskRowProps) => {
-  const title = (
-    <Link href={titleHref} variant="caption">
-      {data.title}
-    </Link>
-  );
+  const title = <StyledRouterLink to={titleHref}>{data.title}</StyledRouterLink>;
 
   return (
     <StyledTaskRow isCompleted={data.completed}>

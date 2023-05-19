@@ -6,6 +6,7 @@ import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
 import { ToggleTask } from 'features/ToggleTask';
 import CircularProgress from '@mui/material/CircularProgress';
+import { StyledRouterLink } from 'shared/ui';
 import { StyledTaskDetails } from './TaskDetails.styled';
 
 export const TaskDetails = () => {
@@ -34,7 +35,7 @@ export const TaskDetails = () => {
       {task && (
         <TaskCard
           data={task}
-          titleAction={<Link to="/">Back to list</Link>}
+          titleAction={<StyledRouterLink to="/">Back to list</StyledRouterLink>}
           cardAction={<ToggleTask id={task.id} isCompleted={task.completed} withStatus />}
         />
       )}

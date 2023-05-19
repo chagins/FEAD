@@ -23,7 +23,6 @@ export const MainLayout = () => {
                 Feature-Sliced Design
               </Link>
             </Typography>
-
             <SwitchTheme />
           </Toolbar>
         </AppBar>
