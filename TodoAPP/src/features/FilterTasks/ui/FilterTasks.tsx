@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
 import { taskModel } from 'entities/task';
 import { useAppDispatch } from 'shared/lib';
 
@@ -34,17 +35,19 @@ export const FilterTasks = () => {
   };
 
   return (
-    <ToggleButtonGroup
-      color="secondary"
-      value={filter}
-      onChange={(_, value) => onFilter(value)}
-      exclusive
-    >
-      {filterTypes.map(({ label, config }) => (
-        <ToggleButton key={label} value={config}>
-          <Typography>{label}</Typography>
-        </ToggleButton>
-      ))}
-    </ToggleButtonGroup>
+    <Box pb={1}>
+      <ToggleButtonGroup
+        color="secondary"
+        value={filter}
+        onChange={(_, value) => onFilter(value)}
+        exclusive
+      >
+        {filterTypes.map(({ label, config }) => (
+          <ToggleButton key={label} value={config}>
+            <Typography>{label}</Typography>
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+    </Box>
   );
 };

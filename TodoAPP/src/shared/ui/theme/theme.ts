@@ -18,12 +18,12 @@ const generalThemeOptions: ThemeOptions = {
   },
 };
 
-type TColorModeContext = {
+type TThemeModeContext = {
   toggleColorMode: () => void;
   mode: ThemeMode;
 };
 
-export const ColorModeContext = React.createContext<TColorModeContext>({
+export const ThemeModeContext = React.createContext<TThemeModeContext>({
   toggleColorMode: () => {},
   mode: 'light',
 });

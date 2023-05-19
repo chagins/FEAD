@@ -8,7 +8,10 @@ export const StyledTaskList = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(1),
   '& > .tasksStack': {
+    paddingRight: theme.spacing(1),
+    height: 'calc(100vh - 200px)',
     width: '100%',
+    overflowX: 'auto',
     gap: theme.spacing(1),
   },
 }));

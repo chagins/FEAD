@@ -6,7 +6,7 @@ import {
   createTheme,
   useMediaQuery,
 } from '@mui/material';
-import { getThemeOptions, ColorModeContext } from 'shared/ui';
+import { getThemeOptions, ThemeModeContext } from 'shared/ui';
 import { getThemeModeFromLS, setThemeModeToLS } from 'shared/lib';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
@@ -38,11 +38,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const theme = React.useMemo(() => createTheme(getThemeOptions(mode)), [mode]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <ThemeModeContext.Provider value={colorMode}>
       <MUIThemeProvider theme={theme}>
         <CssBaseline />
         {children}
       </MUIThemeProvider>
-    </ColorModeContext.Provider>
+    </ThemeModeContext.Provider>
   );
 };

@@ -6,7 +6,7 @@ import { TasksList } from 'widgets/TasksList';
 export const TasksListPage = () => {
   return (
     <Container maxWidth="md">
-      <Typography mt={2} variant="h2" align="center">
+      <Typography pt={2} variant="h2" align="center">
         Tasks list
       </Typography>
       <TasksList />
