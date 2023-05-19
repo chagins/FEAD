@@ -1,32 +1,48 @@
 import React, { useMemo, useState } from 'react';
 
-import { CssBaseline, ThemeProvider, createTheme, useMediaQuery } from '@mui/material';
+import {
+  CssBaseline,
+  ThemeProvider as MUIThemeProvider,
+  createTheme,
+  useMediaQuery,
+} from '@mui/material';
 import { getThemeOptions, ColorModeContext } from 'shared/ui';
+import { getThemeModeFromLS, setThemeModeToLS } from 'shared/lib';
 
-export const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(prefersDarkMode);
+
+  const [mode, setMode] = useState<ThemeMode>(() => {
+    const loadedMode = getThemeModeFromLS();
+
+    if (loadedMode && ['dark', 'light'].includes(loadedMode)) {
+      return loadedMode as ThemeMode;
+    }
+
+    return prefersDarkMode ? 'dark' : 'light';
+  });
 
   const colorMode = useMemo(() => {
     return {
       toggleColorMode: () => {
-        setIsDarkMode((prevMode) => !prevMode);
+        setMode((prevMode) => {
+          const newMode = prevMode === 'dark' ? 'light' : 'dark';
+          setThemeModeToLS(newMode);
+          return newMode;
+        });
       },
-      isDarkMode,
+      mode,
     };
-  }, [isDarkMode]);
+  }, [mode]);
 
-  const theme = React.useMemo(
-    () => createTheme(getThemeOptions(isDarkMode ? 'dark' : 'light')),
-    [isDarkMode]
-  );
+  const theme = React.useMemo(() => createTheme(getThemeOptions(mode)), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
+      <MUIThemeProvider theme={theme}>
         <CssBaseline />
         {children}
-      </ThemeProvider>
+      </MUIThemeProvider>
     </ColorModeContext.Provider>
   );
 };

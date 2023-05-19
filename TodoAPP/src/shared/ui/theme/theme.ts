@@ -1,5 +1,5 @@
 import React from 'react';
-import { PaletteMode, ThemeOptions } from '@mui/material';
+import { ThemeOptions } from '@mui/material';
 import { amber, deepOrange, grey, orange } from '@mui/material/colors';
 
 const generalThemeOptions: ThemeOptions = {
@@ -18,12 +18,17 @@ const generalThemeOptions: ThemeOptions = {
   },
 };
 
-export const ColorModeContext = React.createContext({
+type TColorModeContext = {
+  toggleColorMode: () => void;
+  mode: ThemeMode;
+};
+
+export const ColorModeContext = React.createContext<TColorModeContext>({
   toggleColorMode: () => {},
-  isDarkMode: false,
+  mode: 'light',
 });
 
-export const getThemeOptions = (mode: PaletteMode): ThemeOptions => {
+export const getThemeOptions = (mode: ThemeMode): ThemeOptions => {
   return {
     ...generalThemeOptions,
     palette: {

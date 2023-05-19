@@ -3,11 +3,11 @@ import { ColorModeContext } from 'shared/ui';
 import { StyledSwitchTheme } from './SwitchTheme.styled';
 
 export const SwitchTheme = () => {
-  const { toggleColorMode, isDarkMode } = useContext(ColorModeContext);
+  const { toggleColorMode, mode } = useContext(ColorModeContext);
 
   const onSwitchTheme = () => {
     toggleColorMode();
   };
 
-  return <StyledSwitchTheme onClick={onSwitchTheme} checked={isDarkMode} />;
+  return <StyledSwitchTheme onClick={onSwitchTheme} checked={mode === 'dark'} />;
 };
