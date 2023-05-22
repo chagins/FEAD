@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeModeContext } from 'shared/ui';
-import { StyledSwitchTheme } from './SwitchTheme.styled';
+
+import { StyledSwitch } from './SwitchTheme.styled';
 
 export const SwitchTheme = () => {
   const { toggleColorMode, mode } = useContext(ThemeModeContext);
@@ -9,5 +10,5 @@ export const SwitchTheme = () => {
     toggleColorMode();
   };
 
-  return <StyledSwitchTheme onClick={onSwitchTheme} checked={mode === 'dark'} />;
+  return <StyledSwitch onClick={onSwitchTheme} checked={mode === 'dark'} />;
 };

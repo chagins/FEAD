@@ -6,14 +6,23 @@ import { Outlet } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import { SwitchTheme } from 'features/SwitchTheme';
 import { lightBlue } from '@mui/material/colors';
+import IconButton from '@mui/material/IconButton';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import { StyledRouterLink } from 'shared/ui';
+import { SignOut } from 'features/auth';
 
-export const MainLayout = () => {
+export const AppLayout = () => {
   return (
     <>
       <header>
         <AppBar position="static" variant="elevation" enableColorOnDark>
           <Toolbar>
-            <Typography variant="h1" component="div" sx={{ flexGrow: 1 }}>
+            <IconButton color="default" size="large">
+              <StyledRouterLink to="/">
+                <HomeOutlinedIcon fontSize="large" color="inherit" />
+              </StyledRouterLink>
+            </IconButton>
+            <Typography fontSize={24} fontWeight="bold" component="div" sx={{ flexGrow: 1 }}>
               TODO APP with 🍰
               <Link
                 color={lightBlue[600]}
@@ -24,6 +33,7 @@ export const MainLayout = () => {
               </Link>
             </Typography>
             <SwitchTheme />
+            <SignOut />
           </Toolbar>
         </AppBar>
       </header>

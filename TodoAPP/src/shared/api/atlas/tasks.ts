@@ -1,33 +1,55 @@
-import type { AxiosPromise } from 'axios';
-import { apiInstance } from './base';
-import { TTask } from './types';
+import { atlasApiInstance } from './base';
+import { TTask, TObjectId } from './types';
 
-type TGetTasksListParams = {
-  completed?: boolean;
+export const getDataCollection = () => {
+  if (!atlasApiInstance?.currentUser) {
+    return null;
+  }
+  const mongo = atlasApiInstance.currentUser.mongoClient('DBCluster0');
+  const collection = mongo.db('TodoApp').collection<TTask>('Tasks');
+  return collection;
 };
 
-type TGetTasksListResponse = {
-  documents: TTask[];
-};
+export const getTasksList = () => {
+  const collection = getDataCollection();
 
-export const getTasksList = (params?: TGetTasksListParams): AxiosPromise<TGetTasksListResponse> => {
-  return apiInstance.post('find', {
-    filter: {
-      ...params,
-    },
-  });
+  if (!collection) {
+    return null;
+  }
+
+  return collection.find();
 };
 
 type TApiGetTaskByIdParams = {
   id: number;
 };
 
-type TGetTaskByIdResponse = {
-  document: TTask;
+export const getTaskById = (params: TApiGetTaskByIdParams) => {
+  const collection = getDataCollection();
+
+  if (!collection) {
+    return null;
+  }
+
+  return collection.findOne({
+    filter: {
+      ...params,
+    },
+  });
 };
 
-export const getTaskById = (params: TApiGetTaskByIdParams): AxiosPromise<TGetTaskByIdResponse> => {
-  return apiInstance.post('findOne', {
+type TApiGetTaskByOidParams = {
+  _id: TObjectId;
+};
+
+export const getTaskByOid = (params: TApiGetTaskByOidParams) => {
+  const collection = getDataCollection();
+
+  if (!collection) {
+    return null;
+  }
+
+  return collection.findOne({
     filter: {
       ...params,
     },
@@ -39,23 +61,29 @@ type TUpdateTaskCompleteStatusParams = {
   completed: boolean;
 };
 
-export type TApiUpdateTaskResponse = {
-  matchedCount: number;
-  modifiedCount: number;
+export const updateTaskCompleteStatus = ({ id, completed }: TUpdateTaskCompleteStatusParams) => {
+  const collection = getDataCollection();
+
+  if (!collection) {
+    return null;
+  }
+
+  return collection.updateOne({ id }, { $set: { completed } });
 };
 
-export const updateTaskCompleteStatus = ({
-  id,
-  completed,
-}: TUpdateTaskCompleteStatusParams): AxiosPromise<TApiUpdateTaskResponse> => {
-  return apiInstance.post('updateOne', {
-    filter: {
-      id,
-    },
-    update: {
-      $set: {
-        completed,
-      },
-    },
+type TCreateTaskParams = Pick<TTask, 'title' | 'userId'>;
+
+export const createTask = ({ title, userId }: TCreateTaskParams) => {
+  const collection = getDataCollection();
+
+  if (!collection) {
+    return null;
+  }
+
+  return collection.insertOne({
+    id: -1,
+    title,
+    completed: false,
+    userId,
   });
 };

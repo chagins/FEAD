@@ -52,6 +52,7 @@ module.exports = {
     "react/display-name": 0,
     "no-console": ["error", {"allow": ["error"]}],
     "react/require-default-props": "off",
+    "no-underscore-dangle":  ["error", { "allow": ["_id"] }]
   },
   'settings': {
     "react": {

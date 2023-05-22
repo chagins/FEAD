@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'shared/lib';
 import { taskModel, TaskCard } from 'entities/task';
 import Alert from '@mui/material/Alert';
@@ -7,7 +7,8 @@ import { AlertTitle } from '@mui/material';
 import { ToggleTask } from 'features/ToggleTask';
 import CircularProgress from '@mui/material/CircularProgress';
 import { StyledRouterLink } from 'shared/ui';
-import { StyledTaskDetails } from './TaskDetails.styled';
+
+import { StyledBox } from './TaskDetails.styled';
 
 export const TaskDetails = () => {
   const { taskId } = useParams();
@@ -24,7 +25,7 @@ export const TaskDetails = () => {
   }
 
   return (
-    <StyledTaskDetails>
+    <StyledBox>
       {tasksStatus === 'pending' && <CircularProgress className="progress" />}
       {((!task && tasksStatus !== 'pending') || tasksStatus === 'rejected') && (
         <Alert severity="error">
@@ -35,10 +36,10 @@ export const TaskDetails = () => {
       {task && (
         <TaskCard
           data={task}
-          titleAction={<StyledRouterLink to="/">Back to list</StyledRouterLink>}
+          titleAction={<StyledRouterLink to="/tasks">Back to list</StyledRouterLink>}
           cardAction={<ToggleTask id={task.id} isCompleted={task.completed} withStatus />}
         />
       )}
-    </StyledTaskDetails>
+    </StyledBox>
   );
 };

@@ -4,11 +4,7 @@ import { withProviders } from './providers';
 import './index.scss';
 
 const App = () => {
-  return (
-    <div className="App">
-      <Routing />
-    </div>
-  );
+  return <Routing />;
 };
 
 export default withProviders(App);

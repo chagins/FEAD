@@ -5,7 +5,7 @@ type TStyledTaskRowProps = {
   isCompleted: boolean;
 };
 
-export const StyledTaskRow = styled(Paper, {
+export const StyledPaper = styled(Paper, {
   shouldForwardProp: (propName) => propName !== 'isCompleted',
 })<TStyledTaskRowProps>(({ theme, isCompleted }) => ({
   padding: theme.spacing(1),

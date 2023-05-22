@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from 'shared/lib';
 import { ToggleTask } from 'features/ToggleTask';
 import { FilterTasks } from 'features/FilterTasks';
 import Alert from '@mui/material/Alert';
-import { StyledTaskList } from './TasksList.styled';
+
+import { StyledBox } from './TasksList.styled';
 
 export const TasksList = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ export const TasksList = () => {
   }, [dispatch, tasksStatus]);
 
   return (
-    <StyledTaskList>
+    <StyledBox>
       <FilterTasks />
       {tasksStatus === 'pending' && <CircularProgress />}
       {tasksStatus === 'rejected' && (
@@ -39,12 +40,12 @@ export const TasksList = () => {
             <TaskRow
               key={task.id}
               data={task}
-              titleHref={`/${task.id}`}
+              titleHref={`/tasks/${task.id}`}
               before={<ToggleTask id={task.id} isCompleted={task.completed} />}
             />
           ))}
         </Stack>
       )}
-    </StyledTaskList>
+    </StyledBox>
   );
 };
