@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'shared/lib';
 import { taskModel, TaskCard } from 'entities/task';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
-import { ToggleTask } from 'features/ToggleTask';
+import { ToggleTask } from 'features/tasks';
 import CircularProgress from '@mui/material/CircularProgress';
 import { StyledRouterLink } from 'shared/ui';
 

@@ -4,8 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { AlertTitle } from '@mui/material';
 import { TaskRow, taskModel } from 'entities/task';
 import { useAppDispatch, useAppSelector } from 'shared/lib';
-import { ToggleTask } from 'features/ToggleTask';
-import { FilterTasks } from 'features/FilterTasks';
+import { ToggleTask, FilterTasks } from 'features/tasks';
 import Alert from '@mui/material/Alert';
 
 import { StyledBox } from './TasksList.styled';
