@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { AlertTitle } from '@mui/material';
 import { TaskRow, taskModel } from 'entities/task';
 import { useAppDispatch, useAppSelector } from 'shared/lib';
-import { ToggleTask, FilterTasks } from 'features/tasks';
+import { ToggleTask, FilterTasks, AddTask } from 'features/tasks';
 import Alert from '@mui/material/Alert';
 
 import { StyledBox } from './TasksList.styled';
@@ -26,6 +26,7 @@ export const TasksList = () => {
   return (
     <StyledBox>
       <FilterTasks />
+      <AddTask />
       {tasksStatus === 'pending' && <CircularProgress />}
       {tasksStatus === 'rejected' && (
         <Alert severity="error">

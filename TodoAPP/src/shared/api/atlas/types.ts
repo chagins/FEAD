@@ -1,7 +1,10 @@
-export type { ObjectId as TObjectId } from 'mongodb';
+// export type { ObjectId as TObjectId } from 'mongodb';
+// export type { ObjectId as TObjectId } from 'mongodb';
+
+export { BSON } from 'realm-web';
 
 export type TTask = {
-  _id: import('mongodb').ObjectId;
+  _id: import('realm-web').BSON.ObjectID;
   id: number;
   title: string;
   // userId: number;

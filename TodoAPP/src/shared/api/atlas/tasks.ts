@@ -1,6 +1,6 @@
 import { SERVICE_NAME, DATABASE_NAME, DATABASE_COLLECTION } from 'shared/config';
 import { atlasApiInstance } from './base';
-import { TTask, TObjectId } from './types';
+import { TTask, BSON } from './types';
 
 export const getDataCollection = () => {
   if (!atlasApiInstance?.currentUser) {
@@ -40,7 +40,8 @@ export const getTaskById = (params: TApiGetTaskByIdParams) => {
 };
 
 type TApiGetTaskByOidParams = {
-  _id: TObjectId;
+  // _id: TObjectId;
+  _id: BSON.ObjectID;
 };
 
 export const getTaskByOid = (params: TApiGetTaskByOidParams) => {
@@ -50,11 +51,7 @@ export const getTaskByOid = (params: TApiGetTaskByOidParams) => {
     return null;
   }
 
-  return collection.findOne({
-    filter: {
-      ...params,
-    },
-  });
+  return collection.findOne({ ...params });
 };
 
 type TUpdateTaskCompleteStatusParams = {
@@ -74,7 +71,7 @@ export const updateTaskCompleteStatus = ({ id, completed }: TUpdateTaskCompleteS
 
 type TCreateTaskParams = Pick<TTask, 'title' | 'userId'>;
 
-export const createTask = ({ title, userId }: TCreateTaskParams) => {
+export const addTask = ({ title, userId }: TCreateTaskParams) => {
   const collection = getDataCollection();
 
   if (!collection) {

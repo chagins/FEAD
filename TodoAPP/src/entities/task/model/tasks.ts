@@ -8,7 +8,7 @@ import {
   PayloadAction,
   createSelector,
 } from '@reduxjs/toolkit';
-import { atlasApi, TTask } from 'shared/api';
+import { atlasApi, TTask, BSON } from 'shared/api';
 import { makeMessageError } from 'shared/lib';
 
 export const fetchTasksQuery = createAsyncThunk<TTask[], void, { rejectValue: string }>(
@@ -42,19 +42,21 @@ export const fetchTaskByIdQuery = createAsyncThunk<TTask, number, { rejectValue:
   }
 );
 
-export const createTask = createAsyncThunk<
+export const addTaskMutation = createAsyncThunk<
   TTask,
   Pick<TTask, 'title' | 'userId'>,
   { rejectValue: string }
 >(
-  'tasks/createTask',
+  'tasks/addTask',
   async ({ userId, title }: Pick<TTask, 'title' | 'userId'>, { rejectWithValue }) => {
     try {
-      const createTaskResponse = await atlasApi.createTask({ title, userId });
-      if (!createTaskResponse) {
+      const response = await atlasApi.addTask({ title, userId });
+      if (!response) {
         throw new Error(`task not created`);
       }
-      const newTask = await atlasApi.getTaskByOid({ _id: createTaskResponse.insertedId });
+      const newTask = await atlasApi.getTaskByOid({
+        _id: new BSON.ObjectID(response.insertedId.id),
+      });
       if (!newTask) {
         throw new Error(`task not found after creation`);
       }
@@ -91,7 +93,7 @@ export const toggleTaskMutation = createAsyncThunk<
 });
 
 const tasksAdapter = createEntityAdapter<TTask>({
-  sortComparer: (a, b) => (a?.id || 0) - (b?.id || 0),
+  sortComparer: (a, b) => (b?.id || 0) - (a?.id || 0),
 });
 
 export type TQueryConfig = {
@@ -136,17 +138,6 @@ const tasksSlice = createSlice({
         state.status = 'rejected';
         state.error = action.payload;
       })
-      .addCase(toggleTaskMutation.fulfilled, (state, action) => {
-        const { id } = action.payload;
-        const toggledTask = state.entities[id];
-        if (toggledTask) {
-          toggledTask.completed = !toggledTask.completed;
-        }
-      })
-      .addCase(toggleTaskMutation.rejected, (state, action) => {
-        state.status = 'rejected';
-        state.error = action.payload;
-      })
       .addCase(fetchTaskByIdQuery.pending, (state) => {
         state.status = 'pending';
       })
@@ -158,12 +149,15 @@ const tasksSlice = createSlice({
         state.status = 'rejected';
         state.error = action.payload;
       })
-      .addCase(createTask.fulfilled, (state, action) => {
-        tasksAdapter.addOne(state, action.payload);
+      .addCase(toggleTaskMutation.fulfilled, (state, action) => {
+        const { id } = action.payload;
+        const toggledTask = state.entities[id];
+        if (toggledTask) {
+          toggledTask.completed = !toggledTask.completed;
+        }
       })
-      .addCase(createTask.rejected, (state, action) => {
-        state.status = 'rejected';
-        state.error = action.payload;
+      .addCase(addTaskMutation.fulfilled, (state, action) => {
+        tasksAdapter.addOne(state, action.payload);
       });
   },
 });

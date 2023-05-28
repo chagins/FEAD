@@ -5,10 +5,11 @@ export const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
+  justifyContent: 'center',
   gap: theme.spacing(1),
   '& > .tasksStack': {
-    paddingRight: theme.spacing(1),
-    height: 'calc(100vh - 200px)',
+    padding: theme.spacing(1),
+    height: 'calc(100vh - 400px)',
     width: '100%',
     overflowX: 'auto',
     gap: theme.spacing(1),
