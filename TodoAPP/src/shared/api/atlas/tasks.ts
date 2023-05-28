@@ -1,3 +1,4 @@
+import { SERVICE_NAME, DATABASE_NAME, DATABASE_COLLECTION } from 'shared/config';
 import { atlasApiInstance } from './base';
 import { TTask, TObjectId } from './types';
 
@@ -5,8 +6,8 @@ export const getDataCollection = () => {
   if (!atlasApiInstance?.currentUser) {
     return null;
   }
-  const mongo = atlasApiInstance.currentUser.mongoClient('DBCluster0');
-  const collection = mongo.db('TodoApp').collection<TTask>('Tasks');
+  const mongo = atlasApiInstance.currentUser.mongoClient(SERVICE_NAME);
+  const collection = mongo.db(DATABASE_NAME).collection<TTask>(DATABASE_COLLECTION);
   return collection;
 };
 
