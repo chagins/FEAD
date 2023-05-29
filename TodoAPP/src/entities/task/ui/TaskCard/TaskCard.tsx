@@ -1,25 +1,35 @@
 import React from 'react';
-import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { type TTask } from 'shared/api';
 
+import { StyledCard } from './TaskCard.styled';
+
 export type TTaskCardProps = {
   data: TTask;
   titleAction: React.ReactNode;
-  cardAction: React.ReactNode;
+  firstCardAction: React.ReactNode;
+  secondCardAction: React.ReactNode;
 };
 
-export const TaskCard = ({ data, titleAction, cardAction }: TTaskCardProps) => {
+export const TaskCard = ({
+  data,
+  titleAction,
+  firstCardAction,
+  secondCardAction,
+}: TTaskCardProps) => {
   return (
-    <Card>
+    <StyledCard>
       <CardHeader title={`Task #${data.id}`} action={titleAction} />
       <CardContent>
         <Typography>{data.title}</Typography>
       </CardContent>
-      <CardActions>{cardAction}</CardActions>
-    </Card>
+      <CardActions className="cardActions">
+        {firstCardAction}
+        {secondCardAction}
+      </CardActions>
+    </StyledCard>
   );
 };

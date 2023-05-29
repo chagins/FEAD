@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'shared/lib';
 import { taskModel, TaskCard } from 'entities/task';
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
-import { ToggleTask } from 'features/tasks';
+import { ToggleTask, DeleteTask } from 'features/tasks';
 import CircularProgress from '@mui/material/CircularProgress';
 import { StyledRouterLink } from 'shared/ui';
 
@@ -37,7 +37,8 @@ export const TaskDetails = () => {
         <TaskCard
           data={task}
           titleAction={<StyledRouterLink to="/tasks">Back to list</StyledRouterLink>}
-          cardAction={<ToggleTask id={task.id} isCompleted={task.completed} withStatus />}
+          firstCardAction={<ToggleTask id={task.id} isCompleted={task.completed} withStatus />}
+          secondCardAction={<DeleteTask id={task.id} redirectHref="/tasks" />}
         />
       )}
     </StyledBox>

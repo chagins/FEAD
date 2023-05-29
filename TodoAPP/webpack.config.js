@@ -18,7 +18,9 @@ const config = {
   target: 'web',
   devtool: 'source-map',
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: 'index.html'
+    },
     static: {
       directory: path.resolve(__dirname, './public')
     },

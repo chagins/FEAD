@@ -12,13 +12,7 @@ export const getDataCollection = () => {
 };
 
 export const getTasksList = () => {
-  const collection = getDataCollection();
-
-  if (!collection) {
-    return null;
-  }
-
-  return collection.find();
+  return getDataCollection()?.find();
 };
 
 type TApiGetTaskByIdParams = {
@@ -26,32 +20,15 @@ type TApiGetTaskByIdParams = {
 };
 
 export const getTaskById = (params: TApiGetTaskByIdParams) => {
-  const collection = getDataCollection();
-
-  if (!collection) {
-    return null;
-  }
-
-  return collection.findOne({
-    filter: {
-      ...params,
-    },
-  });
+  return getDataCollection()?.findOne({ ...params });
 };
 
 type TApiGetTaskByOidParams = {
-  // _id: TObjectId;
   _id: BSON.ObjectID;
 };
 
 export const getTaskByOid = (params: TApiGetTaskByOidParams) => {
-  const collection = getDataCollection();
-
-  if (!collection) {
-    return null;
-  }
-
-  return collection.findOne({ ...params });
+  return getDataCollection()?.findOne({ ...params });
 };
 
 type TUpdateTaskCompleteStatusParams = {
@@ -60,28 +37,24 @@ type TUpdateTaskCompleteStatusParams = {
 };
 
 export const updateTaskCompleteStatus = ({ id, completed }: TUpdateTaskCompleteStatusParams) => {
-  const collection = getDataCollection();
-
-  if (!collection) {
-    return null;
-  }
-
-  return collection.updateOne({ id }, { $set: { completed } });
+  return getDataCollection()?.updateOne({ id }, { $set: { completed } });
 };
 
 type TCreateTaskParams = Pick<TTask, 'title' | 'userId'>;
 
 export const addTask = ({ title, userId }: TCreateTaskParams) => {
-  const collection = getDataCollection();
-
-  if (!collection) {
-    return null;
-  }
-
-  return collection.insertOne({
+  return getDataCollection()?.insertOne({
     id: -1,
     title,
     completed: false,
     userId,
   });
+};
+
+type TDeleteTaskParams = {
+  id: number;
+};
+
+export const deleteTask = (params: TDeleteTaskParams) => {
+  return getDataCollection()?.deleteOne({ ...params });
 };

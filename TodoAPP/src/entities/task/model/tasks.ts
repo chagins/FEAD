@@ -92,6 +92,23 @@ export const toggleTaskMutation = createAsyncThunk<
   }
 });
 
+export const deleteTaskMutation = createAsyncThunk<{ id: number }, number, { rejectValue: string }>(
+  'tasks/deleteTask',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await atlasApi.deleteTask({ id });
+      if (!response || response.deletedCount === 0) {
+        throw new Error(`task with id ${id} not deleted`);
+      }
+      return {
+        id,
+      };
+    } catch (err) {
+      return rejectWithValue(makeMessageError('Delete task error', err));
+    }
+  }
+);
+
 const tasksAdapter = createEntityAdapter<TTask>({
   sortComparer: (a, b) => (b?.id || 0) - (a?.id || 0),
 });
@@ -158,6 +175,13 @@ const tasksSlice = createSlice({
       })
       .addCase(addTaskMutation.fulfilled, (state, action) => {
         tasksAdapter.addOne(state, action.payload);
+      })
+      .addCase(deleteTaskMutation.fulfilled, (state, action) => {
+        const { id } = action.payload;
+        const taskForDelete = state.entities[id];
+        if (taskForDelete) {
+          tasksAdapter.removeOne(state, id);
+        }
       });
   },
 });

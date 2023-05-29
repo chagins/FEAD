@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { AlertTitle } from '@mui/material';
 import { TaskRow, taskModel } from 'entities/task';
 import { useAppDispatch, useAppSelector } from 'shared/lib';
-import { ToggleTask, FilterTasks, AddTask } from 'features/tasks';
+import { ToggleTask, FilterTasks, AddTask, DeleteTask } from 'features/tasks';
 import Alert from '@mui/material/Alert';
 
 import { StyledBox } from './TasksList.styled';
@@ -42,6 +42,7 @@ export const TasksList = () => {
               data={task}
               titleHref={`/tasks/${task.id}`}
               before={<ToggleTask id={task.id} isCompleted={task.completed} />}
+              after={<DeleteTask id={task.id} />}
             />
           ))}
         </Stack>
