@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { ThemeProvider } from 'entities/theme';
 
-export const withTheme = (component: () => React.ReactNode) => () => {
-  return <ThemeProvider>{component()}</ThemeProvider>;
+export const withTheme = (Component: FC) => () => {
+  return (
+    <ThemeProvider>
+      <Component />
+    </ThemeProvider>
+  );
 };
