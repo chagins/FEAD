@@ -13,7 +13,7 @@
     "build-js": "webpack --mode=production --node-env=production",
     "build-types": "tsc --emitDeclarationOnly",
     "ts-check": "tsc --noEmit",
-    "build": "yarn run build-js",
+    "build": "yarn run netlify-env && yarn run build-js",
     "test": "jest",
     "watch": "webpack --watch",
     "lint": "yarn run eslint:fix && yarn run prettier:fix",
